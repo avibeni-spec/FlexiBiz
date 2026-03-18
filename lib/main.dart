@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'screens/services/services_screen.dart';
+import 'screens/business_type_selection_screen.dart';
  
 void main() {
-  runApp(const NailAIApp());
+  runApp(const FlexiBizApp());
 }
  
-class NailAIApp extends StatelessWidget {
-  const NailAIApp({super.key});
+class FlexiBizApp extends StatelessWidget {
+  const FlexiBizApp({super.key});
  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
  
-      // חובה כדי שה־DatePicker יעבוד
       supportedLocales: const [
         Locale('he', 'IL'),
         Locale('en', 'US'),
@@ -30,7 +29,7 @@ class NailAIApp extends StatelessWidget {
         useMaterial3: true,
       ),
  
-      home: const ServicesScreen(),
+      home: const BusinessTypeSelectionScreen(),
     );
   }
 }
