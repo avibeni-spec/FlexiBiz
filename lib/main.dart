@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'screens/onboarding_screen.dart';
-import 'screens/business_type_selection_screen.dart';
-import 'screens/main_dashboard_screen.dart';
+import 'screens/splash/flexora_splash.dart';
  
 void main() {
-  runApp(const FlexiBizApp());
+  runApp(const FlexoraApp());
 }
  
-class FlexiBizApp extends StatelessWidget {
-  const FlexiBizApp({super.key});
+class FlexoraApp extends StatelessWidget {
+  const FlexoraApp({super.key});
  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flexora',
       debugShowCheckedModeBanner: false,
-      home: const OnboardingScreen(),
-      routes: {
-        "/businessType": (context) => const BusinessTypeSelectionScreen(),
-        "/dashboard": (context) => const MainDashboardScreen(),
-      },
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        fontFamily: 'Manrope',
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFFD4AF37),
+          secondary: Color(0xFFF9E5BC),
+        ),
+      ),
+      home: const FlexoraSplash(),
     );
   }
 }
