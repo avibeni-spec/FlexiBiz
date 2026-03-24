@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'clients_screen.dart';
 import 'appointments_screen.dart';
 import 'settings_screen.dart';
- 
+import '../theme/app_strings.dart';
+
 class MainDashboardScreen extends StatefulWidget {
   const MainDashboardScreen({super.key});
- 
+
   @override
   State<MainDashboardScreen> createState() => _MainDashboardScreenState();
 }
- 
+
 class _MainDashboardScreenState extends State<MainDashboardScreen> {
   int _selectedIndex = 0;
- 
+
   final List<Widget> _pages = [
     const Center(
       child: Text(
@@ -24,17 +25,17 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     const AppointmentsScreen(),
     const SettingsScreen(),
   ];
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
- 
+
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          "FlexiBiz",
+          AppStrings.appName, // ✅ Flexora
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w300,
@@ -44,9 +45,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
         ),
         centerTitle: true,
       ),
- 
+
       body: _pages[_selectedIndex],
- 
+
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF1A1A1A),
         selectedItemColor: Colors.white,
@@ -80,4 +81,3 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     );
   }
 }
- 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
- 
+import '../theme/app_strings.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
- 
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -21,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
- 
+
             _SettingsItem(
               icon: Icons.person_outline,
               title: "פרופיל עסק",
@@ -40,7 +41,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             _SettingsItem(
               icon: Icons.info_outline,
-              title: "אודות FlexiBiz",
+              title: "אודות ${AppStrings.appName}",
             ),
           ],
         ),
@@ -48,16 +49,16 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 }
- 
+
 class _SettingsItem extends StatelessWidget {
   final IconData icon;
   final String title;
- 
+
   const _SettingsItem({
     required this.icon,
     required this.title,
   });
- 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,4 +86,3 @@ class _SettingsItem extends StatelessWidget {
     );
   }
 }
- 
