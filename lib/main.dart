@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/splash/flexora_splash.dart';
+import 'screens/splash/flex_splash.dart';
  
 void main() {
   runApp(const FlexoraApp());
@@ -22,7 +22,7 @@ class FlexoraApp extends StatelessWidget {
           secondary: Color(0xFFF9E5BC),
         ),
       ),
-      home: const FlexoraSplash(),
+      home: const FlexSplash(),
     );
   }
 }
