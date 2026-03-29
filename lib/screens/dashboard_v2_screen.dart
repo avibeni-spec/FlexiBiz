@@ -14,22 +14,29 @@ class DashboardV2Screen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ───────── Header (כמו בדוגמת HTML) ─────────
+              // ───────── Header ─────────
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Icon(Icons.menu, color: Colors.white),
-
-                  const Text(
-                    "Flexora",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 2.0,
+                  RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w300,
+                        letterSpacing: 2.0,
+                      ),
+                      children: [
+                        TextSpan(text: 'Flex'),
+                        TextSpan(
+                          text: 'O',
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        TextSpan(text: 'ra'),
+                      ],
                     ),
                   ),
-
                   const CircleAvatar(
                     radius: 18,
                     backgroundColor: Colors.white24,
@@ -103,10 +110,7 @@ class DashboardV2Screen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const CircleAvatar(
-                      radius: 28,
-                      backgroundColor: Colors.white24,
-                    ),
+                    const CircleAvatar(radius: 28, backgroundColor: Colors.white24),
                     const SizedBox(width: 16),
                     const Expanded(
                       child: Column(
@@ -114,31 +118,22 @@ class DashboardV2Screen extends StatelessWidget {
                         children: [
                           Text(
                             "Sarah Cohen",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                           SizedBox(height: 6),
                           Text(
                             "10:30 • Hair Coloring",
-                            style: TextStyle(
-                              color: Colors.white54,
-                              fontSize: 14,
-                            ),
+                            style: TextStyle(color: Colors.white54, fontSize: 14),
                           ),
                         ],
                       ),
                     ),
-                    TextButton(
-                      onPressed: null,
-                      child: const Text("Check In"),
-                    ),
+                    TextButton(onPressed: null, child: const Text("Check In")),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 48),
 
               // ───────── CTA ─────────
               SizedBox(
@@ -165,7 +160,6 @@ class DashboardV2Screen extends StatelessWidget {
   }
 }
 
-// ───────── Stat Card ─────────
 class _StatCard extends StatelessWidget {
   final IconData icon;
   final String value;
