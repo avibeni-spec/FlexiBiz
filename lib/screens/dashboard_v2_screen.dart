@@ -1,156 +1,121 @@
 import 'package:flutter/material.dart';
+import '../state/mock_appointments.dart';
+import 'revenue_screen.dart';
 
 class DashboardV2Screen extends StatelessWidget {
   const DashboardV2Screen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isWide = MediaQuery.of(context).size.width > 700;
+    // ───────── Revenue Calculations ─────────
+    const int pricePerAppointment = 120;
 
-    return SafeArea(
-      child: SingleChildScrollView(
+    final paidAppointments = MockAppointments.all
+        .where((a) => a.status == AppointmentStatus.paid)
+        .toList();
+
+    final totalRevenue =
+        paidAppointments.length * pricePerAppointment;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF0D0D0D),
+      body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ───────── Header ─────────
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.menu, color: Colors.white),
-                  RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: 2.0,
-                      ),
-                      children: [
-                        TextSpan(text: 'Flex'),
-                        TextSpan(
-                          text: 'O',
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        TextSpan(text: 'ra'),
-                      ],
+              const Text(
+                "Dashboard",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // ───────── Revenue Card ─────────
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const RevenueScreen(),
                     ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1A1A),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  const CircleAvatar(
-                    radius: 18,
-                    backgroundColor: Colors.white24,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 40),
-
-              // ───────── Welcome ─────────
-              const Text(
-                "GOOD MORNING",
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 11,
-                  letterSpacing: 2.5,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                "Your studio is ready for today.",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // ───────── Bento Grid ─────────
-              GridView.count(
-                crossAxisCount: isWide ? 2 : 1,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                childAspectRatio: 1.4,
-                children: const [
-                  _StatCard(
-                    icon: Icons.calendar_today,
-                    value: "8",
-                    label: "Today's Appointments",
-                  ),
-                  _StatCard(
-                    icon: Icons.payments,
-                    value: "₪450",
-                    label: "Revenue Today",
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 40),
-
-              // ───────── Highlight ─────────
-              const Text(
-                "Next Appointment",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Row(
-                  children: [
-                    const CircleAvatar(radius: 28, backgroundColor: Colors.white24),
-                    const SizedBox(width: 16),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                  child: Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: const [
                           Text(
-                            "Sarah Cohen",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            "Revenue Today",
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 14,
+                            ),
                           ),
                           SizedBox(height: 6),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.end,
+                        children: [
                           Text(
-                            "10:30 • Hair Coloring",
-                            style: TextStyle(color: Colors.white54, fontSize: 14),
+                            "₪$totalRevenue",
+                            style: const TextStyle(
+                              color: Colors.green,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "${paidAppointments.length} paid",
+                            style: const TextStyle(
+                              color: Colors.white54,
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    TextButton(onPressed: null, child: const Text("Check In")),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 48),
+              const SizedBox(height: 24),
 
-              // ───────── CTA ─────────
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.add),
-                  label: const Text("Quick Add Appointment"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                  ),
-                ),
+              // ───────── Quick Stats ─────────
+              _QuickStat(
+                label: "Appointments Today",
+                value: MockAppointments.all
+                    .where((a) =>
+                        a.status == AppointmentStatus.scheduled ||
+                        a.status == AppointmentStatus.checkedIn)
+                    .length
+                    .toString(),
+              ),
+
+              const SizedBox(height: 12),
+
+              _QuickStat(
+                label: "Completed",
+                value: paidAppointments.length.toString(),
               ),
             ],
           ),
@@ -160,45 +125,40 @@ class DashboardV2Screen extends StatelessWidget {
   }
 }
 
-class _StatCard extends StatelessWidget {
-  final IconData icon;
-  final String value;
+// ───────── Quick Stat Widget ─────────
+class _QuickStat extends StatelessWidget {
   final String label;
+  final String value;
 
-  const _StatCard({
-    required this.icon,
-    required this.value,
+  const _QuickStat({
     required this.label,
+    required this.value,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
         children: [
-          Icon(icon, color: const Color(0xFFE9C349), size: 30),
-          const Spacer(),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 36,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-          const SizedBox(height: 8),
           Text(
             label,
             style: const TextStyle(
               color: Colors.white54,
-              fontSize: 12,
-              letterSpacing: 1.2,
+              fontSize: 14,
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
             ),
           ),
         ],

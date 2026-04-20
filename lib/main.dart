@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/main_dashboard_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const FlexOraApp());
@@ -12,7 +12,7 @@ class FlexOraApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainDashboardScreen(),
+      home: SplashScreen(),
     );
   }
 }
