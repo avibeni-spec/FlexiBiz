@@ -3,10 +3,12 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/invoice.dart';
+import '../models/business_details.dart';
 
 class InvoicePdfGenerator {
   static Future<pw.Document> buildInvoicePdf(
     Invoice invoice,
+    BusinessDetails business,
   ) async {
     final pdf = pw.Document();
 
@@ -22,13 +24,13 @@ class InvoicePdfGenerator {
           pageFormat: PdfPageFormat.a4,
           margin: const pw.EdgeInsets.all(32),
         ),
+        footer: (_) => _footer(business),
         build: (_) => [
-          _header(invoice, logo),
+          _header(invoice, business, logo),
           pw.SizedBox(height: 20),
           _clientSection(invoice),
           pw.SizedBox(height: 16),
           _table(invoice),
-          pw.SizedBox(height: 12),
           pw.Divider(),
           _total(invoice),
         ],
@@ -42,31 +44,30 @@ class InvoicePdfGenerator {
 
   static pw.Widget _header(
     Invoice invoice,
+    BusinessDetails business,
     pw.ImageProvider logo,
   ) {
     return pw.Row(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Text(
-              "FlexOra",
+              business.name,
               style: pw.TextStyle(
                 fontSize: 26,
                 fontWeight: pw.FontWeight.bold,
               ),
             ),
-            pw.Text(
-              "INVOICE",
-              style: pw.TextStyle(
-                fontSize: 14,
-                fontWeight: pw.FontWeight.bold,
-              ),
-            ),
+            pw.Text("Invoice #${invoice.invoiceNumber}"),
+            pw.Text("Issued: ${_fmtDate(invoice.issueDate)}"),
             pw.SizedBox(height: 6),
-            pw.Text("Invoice #: ${invoice.invoiceNumber}"),
-            pw.Text("Issue Date: ${_fmtDate(invoice.issueDate)}"),
+            pw.Text("Reg ID: ${business.registrationId}"),
+            pw.Text(business.address),
+            pw.Text("☎ ${business.phone}"),
+            pw.Text("✉ ${business.email}"),
           ],
         ),
         pw.Image(logo, width: 64),
@@ -117,6 +118,8 @@ class InvoicePdfGenerator {
     );
   }
 
+  // ───────── TOTAL ─────────
+
   static pw.Widget _total(Invoice invoice) {
     return pw.Align(
       alignment: pw.Alignment.centerRight,
@@ -129,6 +132,24 @@ class InvoicePdfGenerator {
       ),
     );
   }
+
+  // ───────── FOOTER ─────────
+
+  static pw.Widget _footer(BusinessDetails business) {
+    return pw.Container(
+      alignment: pw.Alignment.center,
+      child: pw.Text(
+        business.footerNote,
+        style: const pw.TextStyle(
+          fontSize: 9,
+          color: PdfColors.grey600,
+        ),
+        textAlign: pw.TextAlign.center,
+      ),
+    );
+  }
+
+  // ───────── HELPERS ─────────
 
   static String _fmtDate(DateTime d) =>
       "${d.day.toString().padLeft(2, '0')}/"

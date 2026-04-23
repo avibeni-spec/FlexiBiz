@@ -11,15 +11,24 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # UI / UX
   cupertino_icons: ^1.0.6
   google_fonts: ^6.1.0
   flutter_svg: ^2.1.0
+
+  # Networking
   dio: ^5.4.0
+
+  # Splash / Icons
   flutter_native_splash: ^2.4.4
 
-  # ✅ PDF & Printing (Real PDF Export)
+  # ✅ PDF / Printing (Invoices, Receipts, Reports)
   pdf: ^3.10.8
   printing: ^5.12.0
+
+  # ✅ Local persistence (Backend-ready)
+  sqflite: ^2.3.2
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

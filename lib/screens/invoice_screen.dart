@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
 
 import '../state/mock_appointments.dart';
+import '../state/invoice_archive.dart';
 import '../models/invoice.dart';
+import '../models/business_details.dart';
 import '../utils/invoice_pdf_generator.dart';
+import '../utils/audit_logger.dart';
+import '../models/audit_event.dart';
 
 class InvoiceScreen extends StatelessWidget {
   const InvoiceScreen({super.key});
@@ -19,9 +23,7 @@ class InvoiceScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Invoices")),
       body: clients.isEmpty
-          ? const Center(
-              child: Text("No paid appointments"),
-            )
+          ? const Center(child: Text("No invoices"))
           : ListView.builder(
               itemCount: clients.length,
               itemBuilder: (_, index) {
@@ -29,7 +31,7 @@ class InvoiceScreen extends StatelessWidget {
 
                 return ListTile(
                   title: Text(client),
-                  trailing: const Icon(Icons.picture_as_pdf),
+                  trailing: const Icon(Icons.share),
                   onTap: () async {
                     final items = MockAppointments.all
                         .where((a) =>
@@ -58,13 +60,43 @@ class InvoiceScreen extends StatelessWidget {
                       items: items,
                     );
 
+                    // ✅ שמירה לארכיון
+                    await InvoiceArchive.add(invoice);
+
+                    // ✅ Audit: Invoice created
+                    AuditLogger.log(
+                      action: AuditAction.invoice,
+                      description:
+                          "Invoice ${invoice.invoiceNumber} created for $client",
+                    );
+
+                    final business = const BusinessDetails(
+                      name: "FlexOra",
+                      registrationId: "123456789",
+                      address: "Tel Aviv, Israel",
+                      phone: "+972-50-123-4567",
+                      email: "info@flexora.app",
+                      footerNote:
+                          "Payment due immediately. This invoice is not a tax receipt.",
+                    );
+
                     final pdf =
                         await InvoicePdfGenerator.buildInvoicePdf(
                       invoice,
+                      business,
                     );
 
-                    await Printing.layoutPdf(
-                      onLayout: (_) => pdf.save(),
+                    await Printing.sharePdf(
+                      bytes: await pdf.save(),
+                      filename:
+                          "${invoice.invoiceNumber}.pdf",
+                    );
+
+                    // ✅ Audit: Invoice shared
+                    AuditLogger.log(
+                      action: AuditAction.invoiceShared,
+                      description:
+                          "Invoice ${invoice.invoiceNumber} shared",
                     );
                   },
                 );

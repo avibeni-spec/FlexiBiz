@@ -10,6 +10,22 @@ class InvoiceItem {
     required this.durationMinutes,
     required this.price,
   });
+
+  Map<String, dynamic> toJson() => {
+        'dateTime': dateTime.toIso8601String(),
+        'service': service,
+        'durationMinutes': durationMinutes,
+        'price': price,
+      };
+
+  factory InvoiceItem.fromJson(Map<String, dynamic> json) {
+    return InvoiceItem(
+      dateTime: DateTime.parse(json['dateTime']),
+      service: json['service'],
+      durationMinutes: json['durationMinutes'],
+      price: json['price'],
+    );
+  }
 }
 
 class Invoice {
@@ -32,5 +48,25 @@ class Invoice {
   int get total =>
       items.fold<int>(0, (sum, i) => sum + i.price);
 
-  bool get isEmpty => items.isEmpty;
+  Map<String, dynamic> toJson() => {
+        'invoiceNumber': invoiceNumber,
+        'issueDate': issueDate.toIso8601String(),
+        'client': client,
+        'from': from.toIso8601String(),
+        'to': to.toIso8601String(),
+        'items': items.map((i) => i.toJson()).toList(),
+      };
+
+  factory Invoice.fromJson(Map<String, dynamic> json) {
+    return Invoice(
+      invoiceNumber: json['invoiceNumber'],
+      issueDate: DateTime.parse(json['issueDate']),
+      client: json['client'],
+      from: DateTime.parse(json['from']),
+      to: DateTime.parse(json['to']),
+      items: (json['items'] as List)
+          .map((i) => InvoiceItem.fromJson(i))
+          .toList(),
+    );
+  }
 }

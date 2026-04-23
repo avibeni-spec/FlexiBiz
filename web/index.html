@@ -1,35 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="he">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="description" content="NailAI - עיצוב ציפורניים חכם" />
 
-    <!-- נדרש לניווט נכון ב‑Flutter Web -->
+    <!-- ✅ SEO -->
+    <title>FlexOra – Adaptive Business Management</title>
+    <meta
+      name="description"
+      content="FlexOra is a modern business management platform for appointments, payments, invoices, receipts and reports."
+    />
+    <meta
+      name="keywords"
+      content="business management, appointments, invoices, payments, scheduling, receipts"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ✅ Open Graph (WhatsApp / LinkedIn / Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="FlexOra – Adaptive Business Management" />
+    <meta
+      property="og:description"
+      content="Manage appointments, invoices, payments and reports in one adaptive platform."
+    />
+    <meta property="og:image" content="icons/Icon-512.png" />
+    <meta property="og:url" content="/" />
+
+    <!-- ✅ Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FlexOra – Adaptive Business Management" />
+    <meta
+      name="twitter:description"
+      content="Modern business management platform for service-based businesses."
+    />
+    <meta name="twitter:image" content="icons/Icon-512.png" />
+
+    <!-- ✅ required for Flutter Web routing -->
     <base href="/" />
 
-    <!-- אייקונים ו-manifest (ברירת המחדל של Flutter; אם קיימים בפרויקט) -->
+    <!-- ✅ Icons + PWA -->
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#0F0F0F" />
 
-    <title>nailai</title>
-
-    <!-- טעינת flutter.js (ברירת מחדל של Flutter) -->
+    <!-- ✅ Flutter Web loader -->
     <script src="flutter.js" defer></script>
   </head>
 
-  <body>
-    <!-- Bootstrap של Flutter שיוצר את האפליקציה -->
+  <body style="background-color: #0f0f0f">
+    <noscript>
+      FlexOra requires JavaScript to run.
+    </noscript>
+
+    <!-- ✅ Flutter bootstrap -->
     <script src="flutter_bootstrap.js" defer></script>
 
     <!-- ========= GEMINI (GOOGLE AI STUDIO) ========= -->
-    <!-- 1) טעינת ספריית Gemini לדפדפן.
-         נשתמש ב‑jsDelivr (לעתים unpkg חסום בארגונים). -->
-    <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai@latest/dist/browser.bundle.min.js"></script>
-    <script src="https://unpkg.com/@google/generative-ai@latest/dist/browser.bundle.min.js"></script>
-    
 
-    <!-- 2) פונקציה גלובלית ש‑Flutter יקרא אליה -->
+    <!-- Gemini library (jsDelivr – preferred) -->
+    <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai@latest/dist/browser.bundle.min.js"></script>
+
+    <!-- Optional fallback -->
+    <script src="https://unpkg.com/@google/generative-ai@latest/dist/browser.bundle.min.js"></script>
+
+    <!-- ✅ Gemini wrapper function for Flutter -->
     <script>
-      // יוצרת מודל ומחזירה עטיפה עם generateContent(text)
+      // Creates a Gemini model wrapper that Flutter can call
+      window.createGeminiModel = function (apiKey, modelName) {
+        const genAI = new window.GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: modelName });
+
+        return {
+          generateContent: async function (text) {
+            const result = await model.generateContent(text);
+            return result.response.text();
+          },
+        };
+      };
+    </script>
+  </body>
+</html>
